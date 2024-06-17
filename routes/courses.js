@@ -6,11 +6,13 @@ const { validateFields } = require('../middlewares/validate-fields')
 const { getCourses, createCourse, updateCourse, deleteCourse } = require('../controllers/coursesController')
 
 
-// EVERY ROUTE HAS TO BE VALIDATED WITH JWT
-router.use(validateJWT)
+
 
 // GET COURSES
 router.get('/', getCourses)
+
+// EVERY ROUTE HAS TO BE VALIDATED WITH JWT
+router.use(validateJWT)
 
 // CREATE COURSES
 router.post('/', [
