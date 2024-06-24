@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const CourseSchema = Schema({
+const VideosSchema = Schema({
   type: {
     type: Number,
     required: true,
@@ -9,24 +9,11 @@ const CourseSchema = Schema({
     type: String,
     required: true,
   },
-  btntxt: {
+  url: {
     type: String,
     required: true,
-  },
-  Coursedata: {
-    type: Array,
-    required: true,
-  },
-  resume: {
-    type: String,
-  },
-  info: {
-    type: Array,
   },
   img: {
-    type: String,
-  },
-  mod: {
     type: String,
   },
   user: {
@@ -36,10 +23,10 @@ const CourseSchema = Schema({
   },
 });
 
-CourseSchema.method('toJSON', function(){
+VideosSchema.method('toJSON', function(){
   const {_id, __v, ...object} = this.toObject()
   object.id = _id
   return object
 })
 
-module.exports = model("Course", CourseSchema);
+module.exports = model("Video", VideosSchema);

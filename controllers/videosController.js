@@ -1,21 +1,21 @@
 const { response } = require("express");
-const Course = require("../models/Courses");
+const Video = require("../models/Videos");
 
-const getCourses = async(req, res = response) => {
-    const courses = await Course.find().populate('user', 'name')
+const getVideos = async(req, res = response) => {
+    const videos = await Video.find().populate('user', 'name')
 
     return res.json({
         ok: true,
-        courses
+        videos
     })
 }
 
-const createCourse = async(req, res = response) => {
-    const course = new Course(req.body)
+const createVideo = async(req, res = response) => {
+    const video = new Video(req.body)
     
     try {
-        course.user = req.uuid
-        const savedEvent = await course.save()
+        video.user = req.uuid
+        const savedEvent = await video.save()
         res.json({
             ok: true,
             event: savedEvent
@@ -30,37 +30,37 @@ const createCourse = async(req, res = response) => {
     }
 }
 
-const updateCourse = async(req, res = response) => {
+const updateVideos = async(req, res = response) => {
 
-    const courseId = req.params.id
+    const videoId = req.params.id
     const uuid = req.uuid
 
     try {
-        const course = await Course.findById(courseId)
-        if(!course){
+        const video = await Video.findById(videoId)
+        if(!video){
             return res.status(404).json({
                 ok: false,
-                msg: 'Theres is no course with the given ID!!!'
+                msg: 'Theres is no video with the given ID!!!'
             })
         }
 
-        if (course.user.toString() !== uuid){
+        if (video.user.toString() !== uuid){
             return res.status(401).json({
                 ok: false,
-                msg: 'This user cannot update that course!!'
+                msg: 'This user cannot update that video!!'
             })
         }
 
-        const newCourse = {
+        const newVideo = {
             ...req.body,
             user: uuid
         }
 
-        const updatedCourse = await Course.findByIdAndUpdate(courseId, newCourse, {new: true})
+        const updatedVideo = await Video.findByIdAndUpdate(videoId, newVideo, {new: true})
 
         res.json({
             ok: true,
-            course: updatedCourse
+            course: updatedVideo
         })
 
     } catch (error) {
@@ -72,27 +72,27 @@ const updateCourse = async(req, res = response) => {
     }
 }
 
-const deleteCourse = async(req, res = response) => {
-    const courseId = req.params.id
+const deleteVideo = async(req, res = response) => {
+    const videoId = req.params.id
     const uuid = req.uuid
 
     try {
-        const course = await Course.findById(courseId)
-        if(!course){
+        const video = await Video.findById(videoId)
+        if(!video){
             return res.status(404).json({
                 ok: false,
                 msg: 'Theres is no course with the given ID!!!'
             })
         }
 
-        if (course.user.toString() !== uuid){
+        if (video.user.toString() !== uuid){
             return res.status(401).json({
                 ok: false,
-                msg: 'This user cannot delete that course!!'
+                msg: 'This user cannot delete that video!!'
             })
         }
 
-        await Course.findByIdAndDelete(courseId)
+        await Video.findByIdAndDelete(videoId)
 
         res.json({
             ok: true
@@ -107,4 +107,4 @@ const deleteCourse = async(req, res = response) => {
     }
 }
 
-module.exports = {getCourses, createCourse, updateCourse, deleteCourse}
+module.exports = {getVideos, createVideo, updateVideos, deleteVideo}
