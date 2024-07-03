@@ -20,7 +20,7 @@ app.use(express.static('public'))
 // READING AND PARSING OF BODY REQUEST
 app.use(express.json())
 
-app.use(fileUpload({createParentPath: true}));
+app.use(fileUpload({createParentPath: true, tempFileDir: "/tmp/", useTempFiles: true}));
 
 // ROUTES
 app.use('/api/auth', require('./routes/auth'))

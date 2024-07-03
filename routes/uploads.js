@@ -13,15 +13,15 @@ router.post('/', validateUploads ,uploadFile)
 router.put('/:collection/:id', [
     validateUploads, 
     check('id', 'This is not a mongo id').isMongoId(),
-    // check('collection').custom(c => allowedCollections(c, ['users', 'products'])),
+    check('collection').custom(c => allowedCollections(c, ['users', 'courses'])),
     validateFields,
-], updateImage)
-// ], updateImageCloudinary)
+// ], updateImage)
+], updateImageCloudinary)
 
 // GET IMAGES OF SPECIFIED MODEL
 router.get('/:collection/:id', [
     check('id', 'This is not a mongo id').isMongoId(),
-    check('collection').custom(c => allowedCollections(c, ['users', 'products'])),
+    check('collection').custom(c => allowedCollections(c, ['users', 'courses'])),
     validateFields,
 ], showImage)
 
