@@ -64,7 +64,10 @@ const updateImageCloudinary = async (req, resp = response) => {
       cloudinary.uploader.destroy(fileName)  
     }
 
+    console.log('-----------------------------------------------')
     // console.log(req.files.uploadFiles)
+    console.log(req)
+    console.log('-----------------------------------------------')
     const { tempFilePath } = req.files.uploadFiles;
     // const { secure_url } = await cloudinary.uploader.upload(tempFilePath,{folder:`RestServer NodeJs/${collection}`} );
     const { secure_url } = await cloudinary.uploader.upload(tempFilePath );
