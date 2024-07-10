@@ -11,7 +11,7 @@ router.post('/', validateUploads ,uploadFile)
 
 // UPDATE IMAGE O SPECIFIED MODEL
 router.put('/:collection/:id', [
-    // validateUploads, 
+    validateUploads, 
     check('id', 'This is not a mongo id').isMongoId(),
     check('collection').custom(c => allowedCollections(c, ['users', 'courses'])),
     validateFields,
