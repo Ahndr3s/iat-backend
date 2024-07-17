@@ -19,7 +19,7 @@ router.post('/', [
     check('type', 'The content must have a type!!').not().isEmpty(),
     check('name', 'You need to add a title!!').not().isEmpty(),
     check('url', 'The video needs a url!!').not().isEmpty(),
-    check('img', 'The video needs a thumbnail!!').not().isEmpty(),
+    // check('img', 'The video needs a thumbnail!!').not().isEmpty(),
     // check('id', 'The course needs to have id!!').not().isEmpty(),    
     validateFields
 ], createVideo)
@@ -29,7 +29,7 @@ router.put('/:id', [
     check('type', 'The content must have a type!!').not().isEmpty(),
     check('name', 'You need to add a title!!').not().isEmpty(),
     check('url', 'The video needs a url!!').not().isEmpty(),
-    check('img', 'The video needs a thumbnail!!').not().isEmpty(),
+    // check('img', 'The video needs a thumbnail!!').not().isEmpty(),
     validateFields
 ], updateVideos)
 
