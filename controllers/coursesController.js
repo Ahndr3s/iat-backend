@@ -13,6 +13,10 @@ const getCourses = async(req, res = response) => {
 const createCourse = async(req, res = response) => {
     const course = new Course(req.body)
     
+    if (req.file) {
+        course.img = req.file.path; // Guarda la ruta del archivo en el campo img
+    }
+    
     try {
         course.user = req.uuid
         const savedEvent = await course.save()
