@@ -34,7 +34,7 @@ const getCourses = async(req, res = response) => {
     }
 }*/
 
-const createCourse = async (req, res = response) => {
+/*const createCourse = async (req, res = response) => {
     const { data, uploadFiles } = req.body;
 
     let course;
@@ -57,7 +57,37 @@ const createCourse = async (req, res = response) => {
         console.log(error);
         return res.status(500).json({ ok: false, msg: 'Talk with the admin' });
     }
+};*/
+
+const createCourse = async (req, res = response) => {
+    console.log('Request received:', req.body, req.files);
+    try {
+        const data = JSON.parse(req.body.data);
+        const { uploadFiles } = req.files;
+
+        const course = new Course(data);
+
+        if (uploadFiles) {
+            const { secure_url } = await cloudinary.uploader.upload(uploadFiles.tempFilePath);
+            course.img = secure_url;
+        }
+
+        course.user = req.uuid;
+        const savedEvent = await course.save();
+        res.json({
+            ok: true,
+            event: savedEvent
+        });
+
+    } catch (error) {
+        console.log('Error:', error);
+        return res.status(500).json({
+            ok: false,
+            msg: 'Talk with the admin'
+        });
+    }
 };
+
 
 
 const updateCourse = async(req, res = response) => {
