@@ -10,7 +10,7 @@ const getCourses = async(req, res = response) => {
     })
 }
 
-/*const createCourse = async(req, res = response) => {
+const createCourse = async(req, res = response) => {
     const course = new Course(req.body)
     
     if (req.file) {
@@ -32,7 +32,7 @@ const getCourses = async(req, res = response) => {
             msg: 'Talk with the admin'
         })
     }
-}*/
+}
 
 /*const createCourse = async (req, res = response) => {
     const { data, uploadFiles } = req.body;
@@ -59,7 +59,7 @@ const getCourses = async(req, res = response) => {
     }
 };*/
 
-const createCourse = async (req, res = response) => {
+/*const createCourse = async (req, res = response) => {
     console.log('Request received:', req.body, req.files);
     try {
         const data = JSON.parse(req.body.data);
@@ -86,7 +86,7 @@ const createCourse = async (req, res = response) => {
             msg: 'Talk with the admin'
         });
     }
-};
+};*/
 
 
 
