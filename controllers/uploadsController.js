@@ -73,7 +73,7 @@ const updateImageCloudinary = async (req, resp = response) => {
       upload_preset:'unsigned_upload',
       allowed_formats: ['png','jpg','jpeg','svg','ico','jfif','webp']
     })
-    model.img = uploadedImage;
+    img = uploadedImage;
 
     // cloudinary.uploader.upload(img)
     await model.save();
