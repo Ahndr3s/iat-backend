@@ -16,6 +16,8 @@ app.use(cors())
 // PUBLIC DIRECTORY
 app.use(express.static('public'))
 
+app.use(express.urlencoded({extended:true, limit: '50mb'}))
+
 
 // READING AND PARSING OF BODY REQUEST
 app.use(express.json())
