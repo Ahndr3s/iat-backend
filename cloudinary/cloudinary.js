@@ -1,4 +1,4 @@
-const cloudinary = require('clodinary').v2
+const cloudinary = require('cloudinary').v2
 require('dotenv').config()
 
 /*(async function() {
