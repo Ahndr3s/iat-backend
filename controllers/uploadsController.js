@@ -73,12 +73,12 @@ const updateImageCloudinary = async (req, resp = response) => {
       upload_preset:'unsigned_upload',
       allowed_formats: ['png','jpg','jpeg','svg','ico','jfif','webp']
     })
-    img = uploadedImage;
+    // img = uploadedImage;
 
     // cloudinary.uploader.upload(img)
-    await model.save();
+    // await model.save();
 
-    resp.json(model);
+    resp.json(updateImage);
   } catch (error) {
     console.error(error);
     resp.status(500).json({ msg: "Something went wrong. Please try again later." });
