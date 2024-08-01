@@ -56,20 +56,20 @@ const updateImageCloudinary = async (req, resp = response) => {
     }
 
     // CLEAN UP PREVIOUS IMAGES
-    if(model.img){
+    /*if(model.img){
       // DELETE IMAGE FROM CLOUDINARY
       const maimedLink = model.img.split('/')
       const file = maimedLink[maimedLink.length - 1]
       const [fileName] = file.split('.')
       cloudinary.uploader.destroy(fileName)  
-    }
+    }*/
 
     // const { tempFilePath } = req.files.uploadFiles;
     // const { secure_url } = await cloudinary.uploader.upload(tempFilePath,{folder:`RestServer NodeJs/${collection}`} );
     // const { secure_url } = await cloudinary.uploader.upload(tempFilePath );
     // model.img = secure_url;
-    
-    const uploadedImage = await cloudinary.uploader.upload(model.img, {
+    const {img} = req.body
+    const uploadedImage = await cloudinary.uploader.upload(img, {
       upload_preset:'unsigned_upload',
       allowed_formats: ['png','jpg','jpeg','svg','ico','jfif','webp']
     })
