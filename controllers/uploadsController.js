@@ -1,7 +1,7 @@
 const { response } = require("express");
 const fs = require("fs");
 const path = require("path");
-const cloudinary = require("cloudinary").v2;
+const cloudinary = require("../cloudinary/cloudinary");
 cloudinary.config(process.env.CLOUDINARY_URL);
 const { uploadFileHelper } = require("../helpers");
 const { User, Course, Video } = require("../models");
@@ -66,8 +66,11 @@ const updateImageCloudinary = async (req, resp = response) => {
 
     const { tempFilePath } = req.files.uploadFiles;
     // const { secure_url } = await cloudinary.uploader.upload(tempFilePath,{folder:`RestServer NodeJs/${collection}`} );
-    const { secure_url } = await cloudinary.uploader.upload(tempFilePath );
+    // const { secure_url } = await cloudinary.uploader.upload(tempFilePath );
+    await cloudinary.uploader.upload(model.img)
     model.img = secure_url;
+
+    // cloudinary.uploader.upload(img)
     await model.save();
 
     resp.json(model);
