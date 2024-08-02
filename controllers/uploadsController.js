@@ -78,7 +78,7 @@ const updateImageCloudinary = async (req, resp = response) => {
     // cloudinary.uploader.upload(img)
     // await model.save();
 
-    resp.json(updateImage);
+    resp.json(uploadedImage);
   } catch (error) {
     console.error(error);
     resp.status(500).json({ msg: "Something went wrong. Please try again later." });
