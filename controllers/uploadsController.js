@@ -2,7 +2,7 @@ const { response } = require("express");
 const fs = require("fs");
 const path = require("path");
 const cloudinary = require("../cloudinary/cloudinary");
-cloudinary.config(process.env.CLOUDINARY_URL);
+// cloudinary.config(process.env.CLOUDINARY_URL);
 const { uploadFileHelper } = require("../helpers");
 const { User, Course, Video } = require("../models");
 
@@ -69,6 +69,7 @@ const updateImageCloudinary = async (req, resp = response) => {
     // const { secure_url } = await cloudinary.uploader.upload(tempFilePath );
     // model.img = secure_url;
     const {img} = req.body
+    console.log("Image URL received:", img);
     const uploadedImage = await cloudinary.uploader.upload(img, {
       upload_preset:'unsigned_upload',
       allowed_formats: ['png','jpg','jpeg','svg','ico','jfif','webp']
@@ -77,7 +78,7 @@ const updateImageCloudinary = async (req, resp = response) => {
 
     // cloudinary.uploader.upload(img)
     // await model.save();
-
+    console.log("Cloudinary response:", uploadedImage);
     resp.json(uploadedImage);
   } catch (error) {
     console.error(error);
