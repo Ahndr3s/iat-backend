@@ -93,7 +93,7 @@ const updateImageCloudinary = async (req, resp = response) => {
         if (error) {
           console.log(error);
         }
-        console.log(result);
+        console.log(result.secure_url);
       }
     );
     try {
