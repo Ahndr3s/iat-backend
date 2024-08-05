@@ -5,6 +5,7 @@ const cloudinary = require("../cloudinary/cloudinary");
 // cloudinary.config(process.env.CLOUDINARY_URL);
 const { uploadFileHelper } = require("../helpers");
 const { User, Course, Video } = require("../models");
+const upreset = process.env.UPLOADPRESET;
 
 // UPLOADS A FILE TO THE SERVER
 const uploadFile = async (req, resp = response) => {
@@ -22,7 +23,7 @@ const updateImageCloudinary = async (req, resp = response) => {
   const { id, collection } = req.params;
   let model;
 
-  try {
+  // try {
     switch (collection) {
       case "users":
         model = await User.findById(id);
@@ -68,7 +69,8 @@ const updateImageCloudinary = async (req, resp = response) => {
     // const { secure_url } = await cloudinary.uploader.upload(tempFilePath,{folder:`RestServer NodeJs/${collection}`} );
     // const { secure_url } = await cloudinary.uploader.upload(tempFilePath );
     // model.img = secure_url;
-    const {img} = req.body
+    
+    /*const {img} = req.body
     console.log("Image URL received:", img);
     const uploadedImage = await cloudinary.uploader.upload(img, {
       upload_preset:'unsigned_upload',
@@ -79,7 +81,23 @@ const updateImageCloudinary = async (req, resp = response) => {
     // cloudinary.uploader.upload(img)
     // await model.save();
     console.log("Cloudinary response:", uploadedImage);
-    resp.json(uploadedImage);
+    resp.json(uploadedImage);*/
+    const { image } = req.body;
+    const uploadedImage = await cloudinary.uploader.upload(
+      image,
+      {
+        upload_preset: upreset,
+        allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp"],
+      },
+      function (error, result) {
+        if (error) {
+          console.log(error);
+        }
+        console.log(result);
+      }
+    );
+    try {
+      resp.status(200).json(uploadedImage);  
   } catch (error) {
     console.error(error);
     resp.status(500).json({ msg: "Something went wrong. Please try again later." });
