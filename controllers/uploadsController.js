@@ -95,7 +95,7 @@ const updateImageCloudinary = async (req, resp = response) => {
       resp.status(200).json(uploadedImage);
   } catch (error) {
       console.error(error);
-      resp.status(500).json({ msg: "Something went wrong. Please try again later." });
+      Swal.fire('Error', 'There was a problem saving the course', 'error');
   }
 
 };
