@@ -83,24 +83,19 @@ const updateImageCloudinary = async (req, resp = response) => {
     console.log("Cloudinary response:", uploadedImage);
     resp.json(uploadedImage);*/
     const { image } = req.body;
-    const uploadedImage = await cloudinary.uploader.upload(
-      image,
-      {
-        upload_preset: upreset,
-        allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp"],
-      },
-      function (error, result) {
-        if (error) {
-          console.log(error);
-        }
-        console.log(result.secure_url);
-      }
-    );
     try {
-      resp.status(200).json(uploadedImage);  
+      const uploadedImage = await cloudinary.uploader.upload(image, {
+          upload_preset: upreset,
+          allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp"],
+      });
+
+      model.img = uploadedImage.secure_url;
+      await model.save();
+
+      resp.status(200).json(uploadedImage);
   } catch (error) {
-    console.error(error);
-    resp.status(500).json({ msg: "Something went wrong. Please try again later." });
+      console.error(error);
+      resp.status(500).json({ msg: "Something went wrong. Please try again later." });
   }
 
 };
