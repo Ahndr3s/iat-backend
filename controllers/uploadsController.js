@@ -83,9 +83,9 @@ const updateImageCloudinary = async (req, resp = response) => {
     console.log("Cloudinary response:", uploadedImage);
     resp.json(uploadedImage);*/
     const { image } = req.body;
-    try {
-      console.log('Request body:', req.body); // Log para verificar el body del request
-      console.log('Request files:', req.files);
+    console.log('Request body:', req.body);
+    console.log('Request files:', req.files);
+    try {      
       const uploadedImage = await cloudinary.uploader.upload(image, {
           upload_preset: upreset,
           allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp"],
