@@ -9,6 +9,7 @@ const upreset = process.env.UPLOADPRESET;
 
 // UPLOADS A FILE TO THE SERVER
 const uploadFile = async (req, resp = response) => {
+  console.log('-------------------UPLOAD FILE--------------------')
   try {
     const imgName = await uploadFileHelper(req.files, undefined, "users");
     // const imgName = await uploadFileHelper(req.files, undefined)
@@ -22,7 +23,7 @@ const uploadFile = async (req, resp = response) => {
 const updateImageCloudinary = async (req, resp = response) => {
   const { id, collection } = req.params;
   let model;
-
+  console.log('-------------------UPDATE FILE--------------------')
   // try {
     switch (collection) {
       case "users":
