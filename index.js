@@ -1,3 +1,5 @@
+//index.js
+
 const express = require('express')
 const { dbConnection } = require('./database/config')
 const cors = require('cors')
@@ -16,20 +18,16 @@ app.use(cors())
 // PUBLIC DIRECTORY
 app.use(express.static('public'))
 
-app.use(express.urlencoded({extended:true, limit: '50mb'}))
-
-app.use(fileUpload({
-    createParentPath: true,
-    tempFileDir: "/tmp/",
-    useTempFiles: true,
-    limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit
-}));
-
-
 // READING AND PARSING OF BODY REQUEST
-app.use(express.json())
+app.use(express.json({ limit: '50mb' }))
+app.use(express.urlencoded({ extended: true, limit: '50mb' }))
 
-app.use(fileUpload({createParentPath: true, tempFileDir: "/tmp/", useTempFiles: true}));
+app.use(fileUpload({ 
+    createParentPath: true, 
+    tempFileDir: "/tmp/", 
+    useTempFiles: true,
+    limits: { fileSize: 50 * 1024 * 1024 } // limit file size to 50MB
+}));
 
 // ROUTES
 app.use('/api/auth', require('./routes/auth'))
