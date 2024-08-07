@@ -9,13 +9,25 @@ const upreset = process.env.UPLOADPRESET;
 
 // UPLOADS A FILE TO THE SERVER
 const uploadFile = async (req, resp = response) => {
-  console.log('-------------------UPLOAD FILE--------------------')
-  try {
+  console.log("-------------------UPLOAD FILE--------------------");
+  /*try {
     const imgName = await uploadFileHelper(req.files, undefined, "users");
     // const imgName = await uploadFileHelper(req.files, undefined)
     resp.json({ name: imgName });
   } catch (error) {
     resp.status(400).json({ error });
+  }*/
+  try {
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return resp.status(400).json({ msg: "No files were uploaded." });
+    }
+    const imgName = await uploadFileHelper(req.files, undefined, "users");
+    resp.json({ name: imgName });
+  } catch (error) {
+    console.error(error);
+    resp
+      .status(500)
+      .json({ msg: "Something went wrong while uploading the file" });
   }
 };
 
@@ -23,42 +35,42 @@ const uploadFile = async (req, resp = response) => {
 const updateImageCloudinary = async (req, resp = response) => {
   const { id, collection } = req.params;
   let model;
-  console.log('-------------------UPDATE FILE--------------------')
+  console.log("-------------------UPDATE FILE--------------------");
   // try {
-    switch (collection) {
-      case "users":
-        model = await User.findById(id);
-        if (!model) {
-          return resp
-            .status(400)
-            .json({ msg: `There is no user with the id ${id}!!!` });
-        }
-        break;
+  switch (collection) {
+    case "users":
+      model = await User.findById(id);
+      if (!model) {
+        return resp
+          .status(400)
+          .json({ msg: `There is no user with the id ${id}!!!` });
+      }
+      break;
 
-      case "courses":
-        model = await Course.findById(id);
-        if (!model) {
-          return resp
-            .status(400)
-            .json({ msg: `There is no course with the id ${id}!!!` });
-        }
-        break;
+    case "courses":
+      model = await Course.findById(id);
+      if (!model) {
+        return resp
+          .status(400)
+          .json({ msg: `There is no course with the id ${id}!!!` });
+      }
+      break;
 
-      case "videos":
-        model = await Video.findById(id);
-        if (!model) {
-          return resp
-            .status(400)
-            .json({ msg: `There is no videoblog with the id ${id}!!!` });
-        }
-        break;
+    case "videos":
+      model = await Video.findById(id);
+      if (!model) {
+        return resp
+          .status(400)
+          .json({ msg: `There is no videoblog with the id ${id}!!!` });
+      }
+      break;
 
-      default:
-        return resp.status(500).json({ msg: "I forgot to validate this" });
-    }
+    default:
+      return resp.status(500).json({ msg: "I forgot to validate this" });
+  }
 
-    // CLEAN UP PREVIOUS IMAGES
-    /*if(model.img){
+  // CLEAN UP PREVIOUS IMAGES
+  /*if(model.img){
       // DELETE IMAGE FROM CLOUDINARY
       const maimedLink = model.img.split('/')
       const file = maimedLink[maimedLink.length - 1]
@@ -66,12 +78,12 @@ const updateImageCloudinary = async (req, resp = response) => {
       cloudinary.uploader.destroy(fileName)  
     }*/
 
-    // const { tempFilePath } = req.files.uploadFiles;
-    // const { secure_url } = await cloudinary.uploader.upload(tempFilePath,{folder:`RestServer NodeJs/${collection}`} );
-    // const { secure_url } = await cloudinary.uploader.upload(tempFilePath );
-    // model.img = secure_url;
-    
-    /*const {img} = req.body
+  // const { tempFilePath } = req.files.uploadFiles;
+  // const { secure_url } = await cloudinary.uploader.upload(tempFilePath,{folder:`RestServer NodeJs/${collection}`} );
+  // const { secure_url } = await cloudinary.uploader.upload(tempFilePath );
+  // model.img = secure_url;
+
+  /*const {img} = req.body
     console.log("Image URL received:", img);
     const uploadedImage = await cloudinary.uploader.upload(img, {
       upload_preset:'unsigned_upload',
@@ -83,24 +95,23 @@ const updateImageCloudinary = async (req, resp = response) => {
     // await model.save();
     console.log("Cloudinary response:", uploadedImage);
     resp.json(uploadedImage);*/
-    const { image } = req.body;
-    console.log('Request body:', req.body);
-    console.log('Request files:', req.files);
-    try {      
-      const uploadedImage = await cloudinary.uploader.upload(image, {
-          upload_preset: upreset,
-          allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp"],
-      });
+  const { image } = req.body;
+  console.log("Request body:", req.body);
+  console.log("Request files:", req.files);
+  try {
+    const uploadedImage = await cloudinary.uploader.upload(image, {
+      upload_preset: upreset,
+      allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp"],
+    });
 
-      model.img = uploadedImage.secure_url;
-      await model.save();
+    model.img = uploadedImage.secure_url;
+    await model.save();
 
-      resp.status(200).json(uploadedImage);
+    resp.status(200).json(uploadedImage);
   } catch (error) {
-      console.error(error);
-      Swal.fire('Error', 'There was a problem saving the course', 'error');
+    console.error(error);
+    Swal.fire("Error", "There was a problem saving the course", "error");
   }
-
 };
 
 // UPDATES THE IMAGE OF THE SCPECIFIED MODEL
