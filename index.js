@@ -18,6 +18,13 @@ app.use(express.static('public'))
 
 app.use(express.urlencoded({extended:true, limit: '50mb'}))
 
+app.use(fileUpload({
+    createParentPath: true,
+    tempFileDir: "/tmp/",
+    useTempFiles: true,
+    limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit
+}));
+
 
 // READING AND PARSING OF BODY REQUEST
 app.use(express.json())
