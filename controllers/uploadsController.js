@@ -36,7 +36,7 @@ const updateImageCloudinary = async (req, resp = response) => {
   const { id, collection } = req.params;
   let model;
   console.log("-------------------UPDATE FILE--------------------");
-  // try {
+   try {
   switch (collection) {
     case "users":
       model = await User.findById(id);
@@ -70,48 +70,26 @@ const updateImageCloudinary = async (req, resp = response) => {
   }
 
   // CLEAN UP PREVIOUS IMAGES
-  /*if(model.img){
+  if(model.img){
       // DELETE IMAGE FROM CLOUDINARY
       const maimedLink = model.img.split('/')
       const file = maimedLink[maimedLink.length - 1]
       const [fileName] = file.split('.')
       cloudinary.uploader.destroy(fileName)  
-    }*/
-
-  // const { tempFilePath } = req.files.uploadFiles;
-  // const { secure_url } = await cloudinary.uploader.upload(tempFilePath,{folder:`RestServer NodeJs/${collection}`} );
-  // const { secure_url } = await cloudinary.uploader.upload(tempFilePath );
-  // model.img = secure_url;
-
-  /*const {img} = req.body
-    console.log("Image URL received:", img);
-    const uploadedImage = await cloudinary.uploader.upload(img, {
-      upload_preset:'unsigned_upload',
-      allowed_formats: ['png','jpg','jpeg','svg','ico','jfif','webp']
-    })
-    // img = uploadedImage;
-
-    // cloudinary.uploader.upload(img)
-    // await model.save();
-    console.log("Cloudinary response:", uploadedImage);
-    resp.json(uploadedImage);*/
-  const { image } = req.body;
-  console.log("Request body:", req.body);
-  console.log("Request files:", req.files);
-  try {
-    const uploadedImage = await cloudinary.uploader.upload(image, {
-      upload_preset: upreset,
-      allowed_formats: ["png", "jpg", "jpeg", "svg", "ico", "jfif", "webp"],
-    });
-
-    model.img = uploadedImage.secure_url;
+    }
+  
+    const { tempFilePath } = req.files.uploadFiles;
+    // const { secure_url } = await cloudinary.uploader.upload(tempFilePath,{folder:`RestServer NodeJs/${collection}`} );
+    const { secure_url } = await cloudinary.uploader.upload(tempFilePath );
+    model.img = secure_url;
     await model.save();
 
-    resp.status(200).json(uploadedImage);
+    resp.json(model);
   } catch (error) {
     console.error(error);
-    Swal.fire("Error", "There was a problem saving the course", "error");
+    resp.status(500).json({ msg: "Something went wrong. Please try again later." });
   }
+
 };
 
 // UPDATES THE IMAGE OF THE SCPECIFIED MODEL
