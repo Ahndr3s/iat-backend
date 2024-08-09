@@ -12,6 +12,10 @@ const getVideos = async(req, res = response) => {
 
 const createVideo = async(req, res = response) => {
     const video = new Video(req.body)
+
+    if (req.file) {
+        video.img = req.file.path; // Guarda la ruta del archivo en el campo img
+    }
     
     try {
         video.user = req.uuid
