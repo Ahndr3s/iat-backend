@@ -4,6 +4,7 @@ const router = Router();
 const { uploadFile, updateImage, showImage, updateImageCloudinary } = require("../controllers/uploadsController");
 const { allowedCollections } = require("../helpers");
 const {  validateFields, validateUploads } = require("../middlewares");
+const cloudinary = require("../cloudinary/cloudinary");
 
 // UPLOAD IMAGE ON SPECIFIED MODEL
 router.post('/', validateUploads ,uploadFile)
@@ -24,5 +25,17 @@ router.get('/:collection/:id', [
     check('collection').custom(c => allowedCollections(c, ['users', 'courses'])),
     validateFields,
 ], showImage)
+
+
+router.post('/delete-image', async (req, res) => {
+    const { public_id } = req.body;
+  
+    try {
+      const result = await cloudinary.uploader.destroy(public_id);
+      res.status(200).json({ result });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
 
 module.exports = router
