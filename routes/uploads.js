@@ -27,7 +27,8 @@ router.get('/:collection/:id', [
 ], showImage)
 
 
-router.post('/delete-image', async (req, res) => {
+router.delete('/:collection/:id', async (req, res) => {
+// router.post( '/api/courses/${activeCourse.id}', async (req, res) => {
     const { public_id } = req.body;
   
     try {
