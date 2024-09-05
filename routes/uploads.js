@@ -29,7 +29,7 @@ router.get('/:collection/:id', [
 
 router.delete('/:collection/:id', async (req, res) => {
 // router.post( '/api/courses/${activeCourse.id}', async (req, res) => {
-    const { public_id } = req.body;
+    const public_id = req.params.id;
   
     try {
       const result = await cloudinary.uploader.destroy(public_id);
